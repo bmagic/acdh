@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Head from 'next/head'
 
-export default ({ children, title = "Au coeur de l'histoire" }) => (
+export default ({ children, title = "Au coeur de l'histoire" , user = {name:"wrong"}}) => (
   <div>
     <Head>
       <title>{ title } | acdh.audio</title>
@@ -11,7 +11,7 @@ export default ({ children, title = "Au coeur de l'histoire" }) => (
     <header>
       <nav>
         <Link href='/'><a>Home</a></Link> |
-        <Link href='/login'><a>Connexion</a></Link>
+        <Link href='/login'><a>Connexion {user.name}</a></Link>
       </nav>
     </header>
 
