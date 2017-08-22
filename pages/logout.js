@@ -3,12 +3,14 @@ import withRedux from 'next-redux-wrapper';
 import makeStore from '../store';
 import sessdata from '../lib/session-data'
 import Layout from '../components/MyLayout.js'
+import Router from 'next/router'
 
 
-class About extends React.Component {
+class Logout extends React.Component {
 
 
     static async getInitialProps({store,req} ) {
+        //await logout
         await sessdata(store,req)
     }
 
@@ -27,7 +29,6 @@ class About extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
     onLogin: currUser => dispatch({ type: 'USER', payload: currUser }),
-    onLogout: currUser => dispatch({type: 'USER', payload: {}})
 });
 const mapStateToProps = state => ({
     user: state.user

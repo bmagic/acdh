@@ -1,62 +1,34 @@
-import Layout from '../components/Layout'
-import Link from 'next/link'
-import { bindActionCreators } from 'redux'
-import { initStore, getUser} from '../store'
-import withRedux from 'next-redux-wrapper'
-import 'isomorphic-fetch'
+import withRedux from 'next-redux-wrapper';
+
+import makeStore from '../store'
+import sessdata from '../lib/session-data'
+import Layout from '../components/MyLayout.js'
 
 
-class Index extends React.Component {
-    static async getInitialProps ({ store }) {
-        const res = await fetch('http://localhost:4000/api/v1/users/profile')
-        const user = await res.json()
-        store.dispatch(getUser(user))
-        console.log(user);
-
-        return { user }
+class IndexPage extends React.Component {
+    static async getInitialProps({store,req} ) {
+       await sessdata(store,req)
     }
 
-    componentDidMount () {
-       // this.timer = this.props.startClock()
-    }
-
-    componentWillUnmount () {
-        //clearInterval(this.timer)
-    }
-
-    render () {
+    render() {
         return (
-            <Layout title="Accueil" user={this.props.user}>
-              <div>
-                <h2>acdh.audio</h2>
-                <p>Trouvez ou retrouvez facilement les émissions d'Au Coeur de l'histoire.</p>
-              </div>
-              <div>
-                <nav>
-                  Filtres de recherche
-                  <input type="text"/>
-                </nav>
-                <ul>
-                  <li>
-                    <Link href="/program?id=1"><a>Emission 1 - Like - Vu - A voir</a></Link>
-                  </li>
-                  <li>
-                    <Link href="/program?id=2"><a>Emission 2 - Like - Vu - A voir</a></Link>
-                  </li>
-                  <li>
-                    <Link href="/program?id=3"><a>Emission 3 - Like - Vu - A voir</a></Link>
-                  </li>
-                </ul>
-              </div>
+            <Layout user={this.props.user}>
+                INDEX
+                {JSON.stringify(this.props)}
             </Layout>
         )
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        getUser: bindActionCreators(getUser, dispatch),
-    }
-}
+const mapDispatchToProps = dispatch => ({
+    onLogin: currUser => dispatch({ type: 'USER', payload: currUser }),
+});
+const mapStateToProps = state => ({
+    user: state.user,
+});
 
-export default withRedux(initStore, null, mapDispatchToProps)(Index)
+export default withRedux(
+    makeStore,
+    mapStateToProps,
+    mapDispatchToProps,
+)(IndexPage);

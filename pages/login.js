@@ -1,14 +1,42 @@
-import Layout from '../components/Layout'
-import Link from 'next/link'
+import React from 'react'
+import PropTypes from 'prop-types'
+import Layout from '../components/MyLayout.js'
 
-export default (store) => (
-  <Layout user={store.user}>
-    <h1>Connexion</h1>
-    <p>
-     Formulaire de connexion
-    </p>
-      <p>
-          <Link><a href="register">Créer un compte</a></Link>
-      </p>
-  </Layout>
-)
+class Login extends React.Component {
+
+    static propTypes = {
+        user: PropTypes.object.isRequired,
+        login: PropTypes.func.isRequired,
+    }
+
+    render() {
+        const {user} = this.props
+        if(user && !user.isGuest){
+            return <div>
+                <h1>Login</h1>
+                <p>you already login</p>
+                <p>{user.name}</p>
+
+            </div>
+        }
+        return <div>
+            <h1>Login</h1>
+            <hr />
+            <label>username:</label>
+            <input id="email" name="email" ref="email" />
+            <br />
+            <label>password:</label>
+            <input id="password" name="password" type="password" ref="password" />
+            <hr />
+            <button onClick={this.handleLogin.bind(this)}>submit</button>
+        </div>
+    }
+
+    handleLogin(){
+        this.props.login(this.refs.email.value, this.refs.password.value)
+    }
+}
+
+
+
+export default Layout(Login)

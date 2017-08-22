@@ -1,18 +1,12 @@
-import React from 'react'
-import Layout from '../components/Layout'
 
-export default class extends React.Component {
-  static getInitialProps({query: {id}}) {
-    return {id}
-  }
+import Layout from '../components/MyLayout.js'
 
-  render() {
-    return <Layout title={"Emission" +this.props.id}>
-      <h1>My {this.props.id} program</h1>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-        magna aliqua.
-      </p>
-    </Layout>
-  }
-}
+const Program = (props) => (
+    <div>
+      <p>This is the program page</p>
+
+    </div>
+)
+
+
+export default Layout(Program)

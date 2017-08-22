@@ -1,28 +1,47 @@
-import { createStore, applyMiddleware } from 'redux'
-import thunkMiddleware from 'redux-thunk'
+import { createStore } from 'redux';
+import allReducers from './reducers';
 
-const acdhInitialState = {
-    user: {}
-}
-
-export const actionTypes = {
-    GET_USER: 'GET_USER'
-}
-
-// REDUCERS
-export const reducer = (state = acdhInitialState, action) => {
+const reducer = (state = { allReducers }, action) => {
     switch (action.type) {
-        case actionTypes.GET_USER:
-            return Object.assign({}, state, { user: action.user})
-        default: return state
+        case 'LOGOUT':
+            return {
+                ...state,
+                user: null,
+            };
+        case 'USER':
+            return {
+                ...state,
+                user: action.payload,
+            };
+        case 'TOGGLE_MODAL1':
+            return {
+                ...state,
+                modal1_state: action.payload,
+            };
+        case 'TOGGLE_LOGIN_MODAL_STATE':
+            return {
+                ...state,
+                LoginModalState: action.payload,
+            };
+        case 'TOGGLE_CLICK_OUTSIDE_STATE':
+            return {
+                ...state,
+                ClickOutsideState: action.payload,
+            };
+        case 'TOGGLE_NAV':
+            return {
+                ...state,
+                NavPaneIsOpen: action.payload,
+            };
+        default:
+            return state;
     }
-}
+};
 
-// ACTIONS
-export const getUser = (user) => dispatch => {
-    return dispatch({ type: actionTypes.GET_USER,user:user })
-}
+const makeStore = initialState => (
+    createStore(reducer, initialState)
+);
 
-export const initStore = (initialState = acdhInitialState) => {
-    return createStore(reducer, initialState, applyMiddleware(thunkMiddleware))
-}
+// exports the functionality to initialize the store
+// rather than exporting the store instance
+export default makeStore;
