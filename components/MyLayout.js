@@ -1,16 +1,22 @@
 import Header from './Header'
-import PropTypes from 'prop-types';
+import {getUser} from '../actions'
 
 
-const Layout = (props) => (
-    <div>
-        <Header user={props.user}/>
-        {props.children}
-    </div>
-)
-
-Layout.propTypes = {
-    user: PropTypes.object.isRequired
-};
+const Layout = function(Page) {
+    return class Higher extends React.Component {
+        static async getInitialProps(ctx) {
+            const {store,req} = ctx
+            await store.dispatch(getUser(req))
+            if(Page.getInitialProps)
+                return Page.getInitialProps(ctx);
+        }
+        render() {
+            return <div>
+                <Header />
+                <Page {...this.props}/>
+            </div>
+        }
+    }
+}
 
 export default Layout
