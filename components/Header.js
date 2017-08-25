@@ -9,12 +9,8 @@ class Header extends Component {
     render() {
         return (
             <div>
-                {JSON.stringify(this.props)}
                 <Link href="/">
                     <a>Home</a>
-                </Link>
-                <Link href="/about">
-                    <a>About</a>
                 </Link>
                 {(this.props.user && this.props.user.email) ?
                     <a onClick={this.logout}>Logout</a>

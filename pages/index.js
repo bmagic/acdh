@@ -11,7 +11,6 @@ class IndexPage extends React.Component {
         return (
             <div>
                 INDEX
-                {JSON.stringify(this.props)}
             </div>
         )
     }
