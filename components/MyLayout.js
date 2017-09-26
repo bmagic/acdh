@@ -13,11 +13,11 @@ const Layout = function (Page) {
         }
 
         render() {
-            return <div>
+            return <div className="main-container">
                 <Header/>
-                <div className="container">
+                <main className="main-content">
                     <Page {...this.props}/>
-                </div>
+                </main>
                 <Footer/>
             </div>
         }
