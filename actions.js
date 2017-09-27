@@ -1,5 +1,7 @@
 import fetch from 'isomorphic-fetch'
-var qs  = require('qs')
+import Router from 'next/router'
+
+var qs = require('qs')
 
 function getUser(req) {
     return async dispatch => {
@@ -9,7 +11,7 @@ function getUser(req) {
         }
 
         function onError(error) {
-            dispatch({type: "ERROR_GENERATED", error});
+            dispatch({type: "ERROR_GENERATED", payload: error});
             return error;
         }
 
@@ -28,7 +30,7 @@ function getUser(req) {
 }
 
 
-function login(email,password) {
+function login(email, password) {
     return async dispatch => {
         function onSuccess(user) {
             dispatch({type: "USER", payload: user});
@@ -36,7 +38,7 @@ function login(email,password) {
         }
 
         function onError(error) {
-            dispatch({type: "ERROR_GENERATED", error});
+            dispatch({type: "ERROR_GENERATED", payload: error});
             return error;
         }
 
@@ -48,19 +50,26 @@ function login(email,password) {
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
                     },
-                    body: qs.stringify({email:email,password:password})
+                    body: qs.stringify({email: email, password: password})
                 }
             )
 
-            const json = await res.json()
-            return onSuccess(json);
+            if (res.status !== 200) {
+                return onError("Authentification incorrecte");
+            } else {
+                const json = await res.json()
+                return onSuccess(json);
+            }
+
 
         } catch (error) {
+
             return onError(error);
         }
     }
 }
-function register(email,password) {
+
+function register(email, password) {
     return async dispatch => {
         function onSuccess(user) {
             dispatch({type: "USER", payload: user});
@@ -68,7 +77,7 @@ function register(email,password) {
         }
 
         function onError(error) {
-            dispatch({type: "ERROR_GENERATED", error});
+            dispatch({type: "ERROR_GENERATED", payload: error});
             return error;
         }
 
@@ -80,7 +89,7 @@ function register(email,password) {
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
                     },
-                    body: qs.stringify({email:email,password:password})
+                    body: qs.stringify({email: email, password: password})
                 }
             )
 
@@ -94,7 +103,6 @@ function register(email,password) {
 }
 
 
-
 function logout() {
     return async dispatch => {
         function onSuccess() {
@@ -104,12 +112,13 @@ function logout() {
         }
 
         function onError(error) {
-            dispatch({type: "ERROR_GENERATED", error});
+            dispatch({type: "ERROR_GENERATED", payload: error});
             return error;
         }
 
         try {
             const res = await fetch('http://localhost:4000/api/v1/users/logout', {credentials: 'include'})
+            Router.push('/')
             return onSuccess();
 
         } catch (error) {
@@ -118,4 +127,4 @@ function logout() {
     }
 }
 
-export {getUser, login, logout,register}
+export {getUser, login, logout, register}

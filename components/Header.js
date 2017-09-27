@@ -21,9 +21,7 @@ class Header extends Component {
                             </Link>
                         </div>
                         <div className="navbar-item">
-                            <Link href="/logout">
-                                <a>Se déconnecter</a>
-                            </Link>
+                                <a onClick={this.logout}> Se déconnecter</a>
                         </div>
                     </div>
                 </div>

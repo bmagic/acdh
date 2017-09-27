@@ -4,7 +4,7 @@ import allReducers from './reducers';
 import thunk from 'redux-thunk';
 
 const acdhInitialState = {
-    user:{}
+    user:{},
 }
 
 const reducer = (state = { allReducers }, action) => {
